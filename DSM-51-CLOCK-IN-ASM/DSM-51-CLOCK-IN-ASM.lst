@@ -29,8 +29,8 @@ ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. 
     9:		B	 B5	SKEY bit P3.5
    10:
    11:				; DISPLAY
-   12:		N      0030	ACTIVE_DISPLAY_BUFFER equ 30h 				; ADRES REJESTRU AKTYWNYCH WYåWIETLACZY
-   13:		N      0038	ACTIVE_DISPLAY_SEGMENTS_BUFFER equ 38h      ; ADRES REJESTRU AKTYWNYCH SEGMENT”W
+   12:		N      0030	ACTIVE_DISPLAY_BUFFER equ 30h 				; ADRES REJESTRU AKTYWNYCH WY≈öWIETLACZY
+   13:		N      0038	ACTIVE_DISPLAY_SEGMENTS_BUFFER equ 38h      ; ADRES REJESTRU AKTYWNYCH SEGMENT√ìW
    14:
    15:				; KEYBOARD
    16:		N      007C	KEYBOARD  equ 7Ch                           ; 4 OSTATNIE STANY KLAWIATURY
@@ -45,11 +45,11 @@ ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. 
    25:		N      0000	org 0
    26:	  0000	02 00 80	    ljmp start
    27:
-   28:		N      000B	org 0Bh				                        ; PROCEDURA OBS£UGI PRZERWANIA OD TIMER0
-   29:	  000B	75 8C E0	    mov TH0, #224           	            ; DLA TRYBU 0 - 900 PRZERWA— NA SEKUND  CO 1024 CYKLE MA
+   28:		N      000B	org 0Bh				                        ; PROCEDURA OBS≈ÅUGI PRZERWANIA OD TIMER0
+   29:	  000B	75 8C E0	    mov TH0, #224           	            ; DLA TRYBU 0 - 900 PRZERWA≈É NA SEKUNDƒò CO 1024 CYKLE MA
 				SZYNOWE
    30:	  000E	D2 D5		    setb F0
-   31:	  0010	32		    reti            		                ; POWR”T Z PRZERWANIA
+   31:	  0010	32		    reti            		                ; POWR√ìT Z PRZERWANIA
    32:
    33:		N      0080	org 80h
    34:
@@ -68,55 +68,55 @@ ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. 
 
  Line  I  Addr  Code            Source
 
-   43:	  008C	79 76		    mov R1, #CLOCK			                ; PO TABLICY Z CYFRAMI CHODZIMY WSKAèNIKIEM
+   43:	  008C	79 76		    mov R1, #CLOCK			                ; PO TABLICY Z CYFRAMI CHODZIMY WSKA≈πNIKIEM
 				R1
    44:
-   45:	  008E	C2 96		    clr SEG7 			                    ;  W£•CZ 7-SEGMENT
-   46:	  0090	7F 01		    mov R7, #00000001b 		                ; ZACZYNAMY OD NAJM£ODSZEGO WYåWIETLACZA
-   47:	  0092	90 01 A7	    mov DPTR, #DISPLAY_PATTERNS       	    ; ADRES TABLICY PRZECHOWYWUJ•CEJ WZORY 7-SEGMENTOWEGO WY
-				åWIETLACZA DO DPTR
+   45:	  008E	C2 96		    clr SEG7 			                    ;  W≈ÅƒÑCZ 7-SEGMENT
+   46:	  0090	7F 01		    mov R7, #00000001b 		                ; ZACZYNAMY OD NAJM≈ÅODSZEGO WY≈öWIETLACZA
+   47:	  0092	90 01 A7	    mov DPTR, #DISPLAY_PATTERNS       	    ; ADRES TABLICY PRZECHOWYWUJƒÑCEJ WZORY 7-SEGMENTOWEGO WY
+				≈öWIETLACZA DO DPTR
    48:
    49:	  0095	75 A8 00	  mov IE, #0				                ; BLOKUJEMY WSZYSTKIE PRZERWANIA
    50:	  0098	75 89 70	    mov TMOD, #01110000b		            ; BLOKADA TIMER1, TIMER0 W TRYBIE 0
-   51:	  009B	75 8C E0	    mov TH0, #224           	            ; 900 PRZERWA— NA SEKUND  CO 1024 CYKLE MASZYNOWE
+   51:	  009B	75 8C E0	    mov TH0, #224           	            ; 900 PRZERWA≈É NA SEKUNDƒò CO 1024 CYKLE MASZYNOWE
    52:
-   53:	  009E	7E 84		    mov R6, #132            	            ; ZLICZANIE DO 900, ØEBY PIERWSZA SEKUNDA TRWA£A SEKUNDE
+   53:	  009E	7E 84		    mov R6, #132            	            ; ZLICZANIE DO 900, ≈ªEBY PIERWSZA SEKUNDA TRWA≈ÅA SEKUNDƒò
    54:	  00A0	7D 04		    mov R5, #4
    55:
    56:	  00A2	D2 8C		    setb TR0			                    ; ZGODA NA ZLICZANIE PRZEZ LICZNIKI TIMERA0
-   57:	  00A4	D2 A9		    setb ET0			                    ; ZGODA NA OBS£UG  PRZERWANIA OD TIMERA0
-   58:	  00A6	D2 AF		    setb EA				                    ; GLOBALNA ZGODA NA OBS£UG  PRZERWANIA
+   57:	  00A4	D2 A9		    setb ET0			                    ; ZGODA NA OBS≈ÅUGƒò PRZERWANIA OD TIMERA0
+   58:	  00A6	D2 AF		    setb EA				                    ; GLOBALNA ZGODA NA OBS≈ÅUGƒò PRZERWANIA
    59:
    60:	  00A8			main_loop:
    61:	  00A8	30 D5 FD	    jnb F0, main_loop		                ; CZEKAMY NA PRZERWANIE
    62:	  00AB	C2 D5		    clr F0				                    ; ZAPOMINAMY O PRZERWANIU
    63:
-   64:				    ; TUTAJ JESTEM 900 RAZY NA SEKUND 
+   64:				    ; TUTAJ JESTEM 900 RAZY NA SEKUNDƒò
    65:
    66:				    ; CYFRA
-   67:	  00AD	78 38		    mov R0, #ACTIVE_DISPLAY_SEGMENTS_BUFFER ; ZA£ADUJ ADRES ACTIVE_DISPLAY_SEGMENTS_BUFFER DO R0
+   67:	  00AD	78 38		    mov R0, #ACTIVE_DISPLAY_SEGMENTS_BUFFER ; ZA≈ÅADUJ ADRES ACTIVE_DISPLAY_SEGMENTS_BUFFER DO R0
    68:	  00AF	E7		    mov A, @R1             		            ; AKTUALNA CYFRA ZEGARA DO AKUMULATORA
-   69:	  00B0	09		    inc R1                  	            ; W NAST PNYM OBROCE P TLI WEè NAST PN• CYFR 
-   70:	  00B1	D2 96		    setb SEG7               	            ; WY£•CZ 7-SEGMENTOWY WYåWIETLACZ (ANTI-GHOSTING)
-   71:	  00B3	F2		    movx @R0, A             	            ; WYSY£AMY WZOREK DO REJESTRU SEGMENT”W
+   69:	  00B0	09		    inc R1                  	            ; W NASTƒòPNYM OBROCIE PƒòTLI WE≈π NASTƒòPNƒÑ CYFRƒò
+   70:	  00B1	D2 96		    setb SEG7               	            ; WY≈ÅƒÑCZ 7-SEGMENTOWY WY≈öWIETLACZ (ANTI-GHOSTING)
+   71:	  00B3	F2		    movx @R0, A             	            ; WYSY≈ÅAMY WZOREK DO REJESTRU SEGMENT√ìW
    72:
-   73:				    ; WYåWIETLACZ
-   74:	  00B4	78 30		    mov R0, #ACTIVE_DISPLAY_BUFFER 		    ; ZA£ADUJ ADRES ACTIVE_DISPLAY_BUFFER DO R0
-   75:	  00B6	EF		    mov A, R7			                    ; AKTUALNY WYåWIETLACZ DO AKUMULATORA
-   76:	  00B7	F2		    movx @R0, A             	            ; WYBIERZ WYåWIETLACZ
-   77:	  00B8	C2 96		    clr SEG7                	            ; W£•CZ 7-SEGMENTOWY WYåWIETLACZ
+   73:				    ; WY≈öWIETLACZ
+   74:	  00B4	78 30		    mov R0, #ACTIVE_DISPLAY_BUFFER 		    ; ZA≈ÅADUJ ADRES ACTIVE_DISPLAY_BUFFER DO R0
+   75:	  00B6	EF		    mov A, R7			                    ; AKTUALNY WY≈öWIETLACZ DO AKUMULATORA
+   76:	  00B7	F2		    movx @R0, A             	            ; WYBIERZ WY≈öWIETLACZ
+   77:	  00B8	C2 96		    clr SEG7                	            ; W≈ÅƒÑCZ 7-SEGMENTOWY WY≈öWIETLACZ
    78:
    79:	  00BA	30 B5 02	    jnb SKEY, no_key
    80:	  00BD	42 7C		    orl KEYBOARD, A
    81:
    82:	  00BF			no_key:
-   83:	  00BF	23		    rl A                    	            ; W NAST PNYM OBROCIE P TLI WEè NAST PNY WYåWIETLACZ
-   84:	  00C0	FF		    mov R7, A			                    ; ZAPAMI TAJ W R7 NOWY WYåWIETLACZ
-   85:	  00C1	30 E7 22	    jnb ACC.7, noACC7 		                ; JEåLI BIT 7 = 0, SKOCZ DO noACC7
-   86:	  00C4	7F 01		    mov R7, #00000001b      	            ; JEåLI NIE, ZACZYNAM ZNOWU OD NAJM£ODSZEGO WYåWIETLACZA
-   87:	  00C6	79 76		    mov R1, #CLOCK 			                ; WRACAMY NA POCZ•TEK TABLICY CLOCK
+   83:	  00BF	23		    rl A                    	            ; W NASTƒòPNYM OBROCIE PƒòTLI WE≈π NASTƒòPNY WY≈öWIETLACZ
+   84:	  00C0	FF		    mov R7, A			                    ; ZAPAMIƒòTAJ W R7 NOWY WY≈öWIETLACZ
+   85:	  00C1	30 E7 22	    jnb ACC.7, noACC7 		                ; JE≈öLI BIT 7 = 0, SKOCZ DO noACC7
+   86:	  00C4	7F 01		    mov R7, #00000001b      	            ; JE≈öLI NIE, ZACZYNAM ZNOWU OD NAJM≈ÅODSZEGO WY≈öWIETLACZA
+   87:	  00C6	79 76		    mov R1, #CLOCK 			                ; WRACAMY NA POCZƒÑTEK TABLICY CLOCK
    88:
-   89:				    ; DEBOUNCING KLAWIATURY, 3 TAKIE SAME, 1 NIE ABY ZAREAGOWA∆ TYLKO RAZ
+   89:				    ; DEBOUNCING KLAWIATURY, 3 TAKIE SAME, 1 NIE ABY ZAREAGOWAƒÜ TYLKO RAZ
    90:	  00C8	E5 7C		    mov A, KEYBOARD
    91:	  00CA	B5 7D 0D	    cjne A, KEYBOARD+1, unstable
    92:	  00CD	B5 7E 0A	    cjne A, KEYBOARD+2, unstable
@@ -138,23 +138,23 @@ ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. 
   101:	  00DA	85 7E 7F	    mov KEYBOARD+3, KEYBOARD+2
   102:	  00DD	85 7D 7E	    mov KEYBOARD+2, KEYBOARD+1
   103:	  00E0	85 7C 7D	    mov KEYBOARD+1, KEYBOARD
-  104:	  00E3	75 7C 00	    mov KEYBOARD, #0            	        ; SK£ADAJ KLAWIATURE OD POCZ•TKU
+  104:	  00E3	75 7C 00	    mov KEYBOARD, #0            	        ; SK≈ÅADAJ KLAWIATURƒò OD POCZƒÑTKU
   105:
   106:	  00E6			noACC7:
-  107:	  00E6	DE C0		    djnz R6, main_loop      	            ; SKOCZ DO main_loop JEåLI R6 NIE JEST ZEREM
-  108:	  00E8	DD BE		    djnz R5, main_loop      	            ; SKOCZ DO main_loop JEåLI R5 NIE JEST ZEREM
+  107:	  00E6	DE C0		    djnz R6, main_loop      	            ; SKOCZ DO main_loop JE≈öLI R6 NIE JEST ZEREM
+  108:	  00E8	DD BE		    djnz R5, main_loop      	            ; SKOCZ DO main_loop JE≈öLI R5 NIE JEST ZEREM
   109:
   110:	  00EA	7E 84		    mov R6, #132            	            ; ZLICZANIE DO 900 (SEKUNDA)
   111:	  00EC	7D 04		    mov R5, #4
   112:
-  113:				    ; TUTAJ JESTEM CO SEKUND 
-  114:	  00EE	05 75		    inc SS        			                ; ZWI KSZ SEKUNDY
+  113:				    ; TUTAJ JESTEM CO SEKUNDƒò
+  114:	  00EE	05 75		    inc SS        			                ; ZWIƒòKSZ SEKUNDY
   115:
-  116:				    ; ZWI KSZANIE MINUT / GODZIN PRZY PRZEPE£NIENIU
+  116:				    ; ZWIƒòKSZANIE MINUT / GODZIN PRZY PRZEPE≈ÅNIENIU
   117:	  00F0	E5 75		    mov A, SS
-  118:	  00F2	B4 3C 17	    cjne A, #60, no60      	                ; JEåLI SEKUNDY NIE S• R”WNE 60, POMIJAMY
-  119:	  00F5	75 75 00	    mov SS, #0              	            ; JEåLI S• R”WNE 60, ZERUJEMY JE
-  120:	  00F8	05 74		    inc MM           		                ; I ZWI KSZAMY MINUTY
+  118:	  00F2	B4 3C 17	    cjne A, #60, no60      	                ; JE≈öLI SEKUNDY NIE SƒÑ R√ìWNE 60, POMIJAMY
+  119:	  00F5	75 75 00	    mov SS, #0              	            ; JE≈öLI SƒÑ R√ìWNE 60, ZERUJEMY JE
+  120:	  00F8	05 74		    inc MM           		                ; I ZWIƒòKSZAMY MINUTY
   121:
   122:	  00FA	E5 74		    mov A, MM
   123:	  00FC	B4 3C 0D	    cjne A, #60, no60
@@ -169,7 +169,7 @@ ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. 
   132:	  010C	12 01 79	    lcall calculate_time
   133:	  010F	80 97		    sjmp main_loop
   134:
-  135:	  0111			keyboard_handler:         		            ; ZAK£ADAMY, ØE STAN KLAWIATURY JEST W AKUMULATO
+  135:	  0111			keyboard_handler:         		            ; ZAK≈ÅADAMY, ≈ªE STAN KLAWIATURY JEST W AKUMULATO
 				RZE
   136:	  0111	B4 22 08	        cjne A, #100010b, no_left_esc
   137:	  0114	E5 73		        mov A, HH
@@ -258,37 +258,37 @@ ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. 
  Line  I  Addr  Code            Source
 
   207:
-  208:	  017C	E5 75		    mov A, SS			                    ; ZA£ADUJ DO AKUMULATORA LICZNIK SEKUND
+  208:	  017C	E5 75		    mov A, SS			                    ; ZA≈ÅADUJ DO AKUMULATORA LICZNIK SEKUND
   209:	  017E	75 F0 0A	    mov B, #10
   210:	  0181	84		    div AB				                    ; PODZIEL SEKUNDY PRZEZ 10
-  211:	  0182	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY DZIESI•TEK SEKUND Z PAMI CI ROM
+  211:	  0182	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ√ìR CYFRY DZIESIƒÑTEK SEKUND Z PAMIƒòCI ROM
   212:	  0183	F5 77		    mov CLOCK+1, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
   213:	  0185	E5 F0		    mov A, B                	            ; JEDNOSTKI SEKUND DO AKUMULATORA
-  214:	  0187	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY JEDNOSTEK SEKUND Z PAMI CI ROM
+  214:	  0187	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ√ìR CYFRY JEDNOSTEK SEKUND Z PAMIƒòCI ROM
   215:	  0188	F5 76		    mov CLOCK, A            	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
   216:
-  217:	  018A	E5 74		    mov A, MM			                    ; ZA£ADUJ DO AKUMULATORA LICZNIK MINUT
+  217:	  018A	E5 74		    mov A, MM			                    ; ZA≈ÅADUJ DO AKUMULATORA LICZNIK MINUT
   218:	  018C	75 F0 0A	    mov B, #10
   219:	  018F	84		    div AB				                    ; PODZIEL MINUTY PRZEZ 10
-  220:	  0190	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY DZIESI•TEK MINUT Z PAMIECI ROM
+  220:	  0190	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ√ìR CYFRY DZIESIƒÑTEK MINUT Z PAMIƒòCI ROM
   221:	  0191	F5 79		    mov CLOCK+3, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
   222:	  0193	E5 F0		    mov A, B                	            ; JEDNOSTKI MINUT DO AKUMULATORA
-  223:	  0195	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY JEDNOSTEK MINUT Z PAMI CI ROM
+  223:	  0195	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ√ìR CYFRY JEDNOSTEK MINUT Z PAMIƒòCI ROM
   224:	  0196	F5 78		    mov CLOCK+2, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
   225:
-  226:	  0198	E5 73		    mov A, HH			                    ; ZA£ADUJ DO AKUMULATORA LICZNIK GODZIN
+  226:	  0198	E5 73		    mov A, HH			                    ; ZA≈ÅADUJ DO AKUMULATORA LICZNIK GODZIN
   227:	  019A	75 F0 0A	    mov B, #10
   228:	  019D	84		    div AB				                    ; PODZIEL GODZINY PRZEZ 10
-  229:	  019E	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY DZIESI•TEK GODZIN Z PAMI CI ROM
+  229:	  019E	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ√ìR CYFRY DZIESIƒÑTEK GODZIN Z PAMIƒòCI ROM
   230:	  019F	F5 7B		    mov CLOCK+5, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
   231:	  01A1	E5 F0		    mov A, B                	            ; JEDNOSTKI GODZIN DO AKUMULATORA
-  232:	  01A3	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY JEDNOSTEK GODZIN Z PAMI CI ROM
+  232:	  01A3	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ√ìR CYFRY JEDNOSTEK GODZIN Z PAMIƒòCI ROM
   233:	  01A4	F5 7A		    mov CLOCK+4, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
   234:
-  235:	  01A6	22		    ret                     	            ; POWR”T Z FUNKCJI
+  235:	  01A6	22		    ret                     	            ; POWR√ìT Z FUNKCJI
   236:
   237:	  01A7			DISPLAY_PATTERNS:
-  238:				;DEFINICJE WZOR”W WYåWIETLACZA 7-SEGMENTOWEGO PREZECHOWYWANA W PAMI CI ROM
+  238:				;DEFINICJE WZOR√ìW WY≈öWIETLACZA 7-SEGMENTOWEGO PRZECHOWYWANA W PAMIƒòCI ROM
   239:	  01A7	3F 06 5B 4F	db 00111111b, 00000110b, 01011011b, 01001111b
   240:	  01AB	66 6D 7D 07	db 01100110b, 01101101b, 01111101b, 00000111b
   241:	  01AF	7F 6F 77 7C	db 01111111b, 01101111b, 01110111b, 01111100b
