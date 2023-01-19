@@ -1,0 +1,432 @@
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 1
+
+
+
+
+
+       MCS-51 Family Macro Assembler   A S E M - 5 1   V 1.3
+       =====================================================
+
+
+
+	Source File:	DSM-51-CLOCK-IN-ASM.asm
+	Object File:	DSM-51-CLOCK-IN-ASM.hex
+	List File:	DSM-51-CLOCK-IN-ASM.lst
+
+
+
+ Line  I  Addr  Code            Source
+
+    1:				; Projekt zegarka dla DSM-51 Assemblerze
+    2:				; https://github.com/tukarp
+    3:				;
+    4:
+    5:				; GLOBAL
+    6:		B	 97	TEST bit P1.7
+    7:		B	 95	BUZZER bit P1.5
+    8:		B	 96	SEG7 bit P1.6
+    9:		B	 B5	SKEY bit P3.5
+   10:
+   11:				; DISPLAY
+   12:		N      0030	ACTIVE_DISPLAY_BUFFER equ 30h 				; ADRES REJESTRU AKTYWNYCH WYåWIETLACZY
+   13:		N      0038	ACTIVE_DISPLAY_SEGMENTS_BUFFER equ 38h      ; ADRES REJESTRU AKTYWNYCH SEGMENT”W
+   14:
+   15:				; KEYBOARD
+   16:		N      007C	KEYBOARD  equ 7Ch                           ; 4 OSTATNIE STANY KLAWIATURY
+   17:
+   18:				; CLOCK
+   19:		N      0076	CLOCK equ 76h                               ; TABLICA NA 6 CYFR WSKAZANIA ZEGARA
+   20:		N      0075	SS	  equ 75h                               ; LICZNIK SEKUND
+   21:		N      0074	MM    equ 74h				                ; LICZNIK MINUT
+   22:		N      0073	HH    equ 73h				                ; LICZNIK GODZIN
+   23:
+   24:
+   25:		N      0000	org 0
+   26:	  0000	02 00 80	    ljmp start
+   27:
+   28:		N      000B	org 0Bh				                        ; PROCEDURA OBS£UGI PRZERWANIA OD TIMER0
+   29:	  000B	75 8C E0	    mov TH0, #224           	            ; DLA TRYBU 0 - 900 PRZERWA— NA SEKUND  CO 1024 CYKLE MA
+				SZYNOWE
+   30:	  000E	D2 D5		    setb F0
+   31:	  0010	32		    reti            		                ; POWR”T Z PRZERWANIA
+   32:
+   33:		N      0080	org 80h
+   34:
+   35:				; USTAW CZAS
+   36:	  0080			start:
+   37:	  0080	75 75 29	    mov SS, #41
+   38:	  0083	75 74 37	    mov MM, #55
+   39:	  0086	75 73 17	    mov HH, #23
+   40:
+   41:	  0089	12 01 79	    lcall calculate_time
+   42:
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 2
+
+
+
+ Line  I  Addr  Code            Source
+
+   43:	  008C	79 76		    mov R1, #CLOCK			                ; PO TABLICY Z CYFRAMI CHODZIMY WSKAèNIKIEM
+				R1
+   44:
+   45:	  008E	C2 96		    clr SEG7 			                    ;  W£•CZ 7-SEGMENT
+   46:	  0090	7F 01		    mov R7, #00000001b 		                ; ZACZYNAMY OD NAJM£ODSZEGO WYåWIETLACZA
+   47:	  0092	90 01 A7	    mov DPTR, #DISPLAY_PATTERNS       	    ; ADRES TABLICY PRZECHOWYWUJ•CEJ WZORY 7-SEGMENTOWEGO WY
+				åWIETLACZA DO DPTR
+   48:
+   49:	  0095	75 A8 00	  mov IE, #0				                ; BLOKUJEMY WSZYSTKIE PRZERWANIA
+   50:	  0098	75 89 70	    mov TMOD, #01110000b		            ; BLOKADA TIMER1, TIMER0 W TRYBIE 0
+   51:	  009B	75 8C E0	    mov TH0, #224           	            ; 900 PRZERWA— NA SEKUND  CO 1024 CYKLE MASZYNOWE
+   52:
+   53:	  009E	7E 84		    mov R6, #132            	            ; ZLICZANIE DO 900, ØEBY PIERWSZA SEKUNDA TRWA£A SEKUNDE
+   54:	  00A0	7D 04		    mov R5, #4
+   55:
+   56:	  00A2	D2 8C		    setb TR0			                    ; ZGODA NA ZLICZANIE PRZEZ LICZNIKI TIMERA0
+   57:	  00A4	D2 A9		    setb ET0			                    ; ZGODA NA OBS£UG  PRZERWANIA OD TIMERA0
+   58:	  00A6	D2 AF		    setb EA				                    ; GLOBALNA ZGODA NA OBS£UG  PRZERWANIA
+   59:
+   60:	  00A8			main_loop:
+   61:	  00A8	30 D5 FD	    jnb F0, main_loop		                ; CZEKAMY NA PRZERWANIE
+   62:	  00AB	C2 D5		    clr F0				                    ; ZAPOMINAMY O PRZERWANIU
+   63:
+   64:				    ; TUTAJ JESTEM 900 RAZY NA SEKUND 
+   65:
+   66:				    ; CYFRA
+   67:	  00AD	78 38		    mov R0, #ACTIVE_DISPLAY_SEGMENTS_BUFFER ; ZA£ADUJ ADRES ACTIVE_DISPLAY_SEGMENTS_BUFFER DO R0
+   68:	  00AF	E7		    mov A, @R1             		            ; AKTUALNA CYFRA ZEGARA DO AKUMULATORA
+   69:	  00B0	09		    inc R1                  	            ; W NAST PNYM OBROCE P TLI WEè NAST PN• CYFR 
+   70:	  00B1	D2 96		    setb SEG7               	            ; WY£•CZ 7-SEGMENTOWY WYåWIETLACZ (ANTI-GHOSTING)
+   71:	  00B3	F2		    movx @R0, A             	            ; WYSY£AMY WZOREK DO REJESTRU SEGMENT”W
+   72:
+   73:				    ; WYåWIETLACZ
+   74:	  00B4	78 30		    mov R0, #ACTIVE_DISPLAY_BUFFER 		    ; ZA£ADUJ ADRES ACTIVE_DISPLAY_BUFFER DO R0
+   75:	  00B6	EF		    mov A, R7			                    ; AKTUALNY WYåWIETLACZ DO AKUMULATORA
+   76:	  00B7	F2		    movx @R0, A             	            ; WYBIERZ WYåWIETLACZ
+   77:	  00B8	C2 96		    clr SEG7                	            ; W£•CZ 7-SEGMENTOWY WYåWIETLACZ
+   78:
+   79:	  00BA	30 B5 02	    jnb SKEY, no_key
+   80:	  00BD	42 7C		    orl KEYBOARD, A
+   81:
+   82:	  00BF			no_key:
+   83:	  00BF	23		    rl A                    	            ; W NAST PNYM OBROCIE P TLI WEè NAST PNY WYåWIETLACZ
+   84:	  00C0	FF		    mov R7, A			                    ; ZAPAMI TAJ W R7 NOWY WYåWIETLACZ
+   85:	  00C1	30 E7 22	    jnb ACC.7, noACC7 		                ; JEåLI BIT 7 = 0, SKOCZ DO noACC7
+   86:	  00C4	7F 01		    mov R7, #00000001b      	            ; JEåLI NIE, ZACZYNAM ZNOWU OD NAJM£ODSZEGO WYåWIETLACZA
+   87:	  00C6	79 76		    mov R1, #CLOCK 			                ; WRACAMY NA POCZ•TEK TABLICY CLOCK
+   88:
+   89:				    ; DEBOUNCING KLAWIATURY, 3 TAKIE SAME, 1 NIE ABY ZAREAGOWA∆ TYLKO RAZ
+   90:	  00C8	E5 7C		    mov A, KEYBOARD
+   91:	  00CA	B5 7D 0D	    cjne A, KEYBOARD+1, unstable
+   92:	  00CD	B5 7E 0A	    cjne A, KEYBOARD+2, unstable
+   93:	  00D0	B5 7F 02	    cjne A, KEYBOARD+3, stable
+   94:	  00D3	80 05		    sjmp unstable
+   95:
+   96:	  00D5			stable:
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 3
+
+
+
+ Line  I  Addr  Code            Source
+
+   97:	  00D5	60 03		    jz unstable			                    ; NIE REAGUJEMY NA PUSZCZENIE KLAWISZA
+   98:	  00D7	12 01 11	    lcall keyboard_handler
+   99:
+  100:	  00DA			unstable:
+  101:	  00DA	85 7E 7F	    mov KEYBOARD+3, KEYBOARD+2
+  102:	  00DD	85 7D 7E	    mov KEYBOARD+2, KEYBOARD+1
+  103:	  00E0	85 7C 7D	    mov KEYBOARD+1, KEYBOARD
+  104:	  00E3	75 7C 00	    mov KEYBOARD, #0            	        ; SK£ADAJ KLAWIATURE OD POCZ•TKU
+  105:
+  106:	  00E6			noACC7:
+  107:	  00E6	DE C0		    djnz R6, main_loop      	            ; SKOCZ DO main_loop JEåLI R6 NIE JEST ZEREM
+  108:	  00E8	DD BE		    djnz R5, main_loop      	            ; SKOCZ DO main_loop JEåLI R5 NIE JEST ZEREM
+  109:
+  110:	  00EA	7E 84		    mov R6, #132            	            ; ZLICZANIE DO 900 (SEKUNDA)
+  111:	  00EC	7D 04		    mov R5, #4
+  112:
+  113:				    ; TUTAJ JESTEM CO SEKUND 
+  114:	  00EE	05 75		    inc SS        			                ; ZWI KSZ SEKUNDY
+  115:
+  116:				    ; ZWI KSZANIE MINUT / GODZIN PRZY PRZEPE£NIENIU
+  117:	  00F0	E5 75		    mov A, SS
+  118:	  00F2	B4 3C 17	    cjne A, #60, no60      	                ; JEåLI SEKUNDY NIE S• R”WNE 60, POMIJAMY
+  119:	  00F5	75 75 00	    mov SS, #0              	            ; JEåLI S• R”WNE 60, ZERUJEMY JE
+  120:	  00F8	05 74		    inc MM           		                ; I ZWI KSZAMY MINUTY
+  121:
+  122:	  00FA	E5 74		    mov A, MM
+  123:	  00FC	B4 3C 0D	    cjne A, #60, no60
+  124:	  00FF	75 74 00	    mov MM, #0
+  125:	  0102	05 73		    inc HH
+  126:
+  127:	  0104	E5 73		    mov A, HH
+  128:	  0106	B4 18 03	    cjne A, #24, no60
+  129:	  0109	75 73 00	    mov HH, #0
+  130:
+  131:	  010C			no60:
+  132:	  010C	12 01 79	    lcall calculate_time
+  133:	  010F	80 97		    sjmp main_loop
+  134:
+  135:	  0111			keyboard_handler:         		            ; ZAK£ADAMY, ØE STAN KLAWIATURY JEST W AKUMULATO
+				RZE
+  136:	  0111	B4 22 08	        cjne A, #100010b, no_left_esc
+  137:	  0114	E5 73		        mov A, HH
+  138:	  0116	B4 17 44	        cjne A, #23, add_hours
+  139:	  0119	75 73 00	        mov HH, #0
+  140:
+  141:	  011C			no_left_esc:
+  142:	  011C	B4 21 08	    cjne A, #100001b, no_left_enter
+  143:	  011F	E5 73		    mov A, HH
+  144:	  0121	B4 00 3D	    cjne A, #0, subtract_hours
+  145:	  0124	75 73 17	    mov HH, #23
+  146:
+  147:	  0127			no_left_enter:
+  148:	  0127	B4 12 08	    cjne A, #10010b, no_down_esc
+  149:	  012A	E5 74		    mov A, MM
+  150:	  012C	B4 3B 36	    cjne A, #59, add_minutes
+  151:	  012F	75 74 00	    mov MM, #0
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 4
+
+
+
+ Line  I  Addr  Code            Source
+
+  152:
+  153:	  0132			no_down_esc:
+  154:	  0132	B4 11 08	    cjne A, #10001b, no_down_enter
+  155:	  0135	E5 74		    mov A, MM
+  156:	  0137	B4 00 2F	    cjne a, #0, subtract_minutes
+  157:	  013A	75 74 3B	    mov MM, #59
+  158:
+  159:	  013D			no_down_enter:
+  160:	  013D	B4 06 08	    cjne A, #110b, no_right_esc
+  161:	  0140	E5 75		    mov A, SS
+  162:	  0142	B4 3B 28	    cjne A, #59, add_seconds
+  163:	  0145	75 75 00	    mov SS, #0
+  164:
+  165:	  0148			no_right_esc:
+  166:	  0148	B4 05 08	    cjne A, #101b, no_right_enter
+  167:	  014B	E5 75		    mov A, SS
+  168:	  014D	B4 00 21	    cjne A, #0, subtract_seconds
+  169:	  0150	75 75 3B	    mov SS, #59
+  170:
+  171:	  0153			no_right_enter:
+  172:	  0153	B4 08 1F	    cjne A, #1000b, no_up
+  173:	  0156	75 75 00	    mov SS, #0
+  174:	  0159	7E 84		    mov R6, #132            	            ; ZLICZANIE DO 900 (SEKUNDA)
+  175:	  015B	7D 04		    mov R5, #4
+  176:
+  177:	  015D			add_hours:
+  178:	  015D	05 73		    inc HH
+  179:	  015F	80 14		    sjmp no_up
+  180:
+  181:	  0161			subtract_hours:
+  182:	  0161	15 73		    dec HH
+  183:	  0163	80 10		    sjmp no_up
+  184:
+  185:	  0165			add_minutes:
+  186:	  0165	05 74		    inc MM
+  187:	  0167	80 0C		    sjmp no_up
+  188:
+  189:	  0169			subtract_minutes:
+  190:	  0169	15 74		    dec MM
+  191:	  016B	80 08		    sjmp no_up
+  192:
+  193:	  016D			add_seconds:
+  194:	  016D	05 75		    inc SS
+  195:	  016F	80 04		    sjmp no_up
+  196:
+  197:	  0171			subtract_seconds:
+  198:	  0171	15 75		    dec SS
+  199:	  0173	80 00		    sjmp no_up
+  200:
+  201:	  0175			no_up:
+  202:	  0175	12 01 79	    lcall calculate_time
+  203:	  0178	22		    ret
+  204:
+  205:	  0179			calculate_time:                   		    ; PRZELICZANIE LICZB Z HH, MM i SS NA CYFRY DLA
+				TABLICY CLOCK
+  206:	  0179	90 01 A7	    mov DPTR, #DISPLAY_PATTERNS
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 5
+
+
+
+ Line  I  Addr  Code            Source
+
+  207:
+  208:	  017C	E5 75		    mov A, SS			                    ; ZA£ADUJ DO AKUMULATORA LICZNIK SEKUND
+  209:	  017E	75 F0 0A	    mov B, #10
+  210:	  0181	84		    div AB				                    ; PODZIEL SEKUNDY PRZEZ 10
+  211:	  0182	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY DZIESI•TEK SEKUND Z PAMI CI ROM
+  212:	  0183	F5 77		    mov CLOCK+1, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
+  213:	  0185	E5 F0		    mov A, B                	            ; JEDNOSTKI SEKUND DO AKUMULATORA
+  214:	  0187	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY JEDNOSTEK SEKUND Z PAMI CI ROM
+  215:	  0188	F5 76		    mov CLOCK, A            	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
+  216:
+  217:	  018A	E5 74		    mov A, MM			                    ; ZA£ADUJ DO AKUMULATORA LICZNIK MINUT
+  218:	  018C	75 F0 0A	    mov B, #10
+  219:	  018F	84		    div AB				                    ; PODZIEL MINUTY PRZEZ 10
+  220:	  0190	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY DZIESI•TEK MINUT Z PAMIECI ROM
+  221:	  0191	F5 79		    mov CLOCK+3, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
+  222:	  0193	E5 F0		    mov A, B                	            ; JEDNOSTKI MINUT DO AKUMULATORA
+  223:	  0195	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY JEDNOSTEK MINUT Z PAMI CI ROM
+  224:	  0196	F5 78		    mov CLOCK+2, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
+  225:
+  226:	  0198	E5 73		    mov A, HH			                    ; ZA£ADUJ DO AKUMULATORA LICZNIK GODZIN
+  227:	  019A	75 F0 0A	    mov B, #10
+  228:	  019D	84		    div AB				                    ; PODZIEL GODZINY PRZEZ 10
+  229:	  019E	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY DZIESI•TEK GODZIN Z PAMI CI ROM
+  230:	  019F	F5 7B		    mov CLOCK+5, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
+  231:	  01A1	E5 F0		    mov A, B                	            ; JEDNOSTKI GODZIN DO AKUMULATORA
+  232:	  01A3	93		    movc A, @A+DPTR         	            ; POBIERAMY WZ”R CYFRY JEDNOSTEK GODZIN Z PAMI CI ROM
+  233:	  01A4	F5 7A		    mov CLOCK+4, A          	            ; UMIESZCZAMY GO W ODPOWIEDNIM MIEJSCU
+  234:
+  235:	  01A6	22		    ret                     	            ; POWR”T Z FUNKCJI
+  236:
+  237:	  01A7			DISPLAY_PATTERNS:
+  238:				;DEFINICJE WZOR”W WYåWIETLACZA 7-SEGMENTOWEGO PREZECHOWYWANA W PAMI CI ROM
+  239:	  01A7	3F 06 5B 4F	db 00111111b, 00000110b, 01011011b, 01001111b
+  240:	  01AB	66 6D 7D 07	db 01100110b, 01101101b, 01111101b, 00000111b
+  241:	  01AF	7F 6F 77 7C	db 01111111b, 01101111b, 01110111b, 01111100b
+  242:
+  243:				end
+
+
+
+
+
+                     register banks used:  ---
+
+                     no errors
+
+
+
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 6
+
+
+
+
+
+	       L I S T   O F   S Y M B O L S
+	       =============================
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+??ASEM_51			  NUMBER    8051
+??VERSION			  NUMBER    0130
+AC				  BIT	      D6
+ACC				  DATA	      E0
+ACTIVE_DISPLAY_BUFFER		  NUMBER    0030	  12
+ACTIVE_DISPLAY_SEGMENTS_BUFFER	  NUMBER    0038	  13
+ADD_HOURS			  CODE	    015D	 177
+ADD_MINUTES			  CODE	    0165	 185
+ADD_SECONDS			  CODE	    016D	 193
+B				  DATA	      F0
+BUZZER				  BIT	      95	   7
+CALCULATE_TIME			  CODE	    0179	 205
+CLOCK				  NUMBER    0076	  19
+CY				  BIT	      D7
+DISPLAY_PATTERNS		  CODE	    01A7	 237
+DPH				  DATA	      83
+DPL				  DATA	      82
+EA				  BIT	      AF
+ES				  BIT	      AC
+ET0				  BIT	      A9
+ET1				  BIT	      AB
+EX0				  BIT	      A8
+EX1				  BIT	      AA
+EXTI0				  CODE	    0003
+EXTI1				  CODE	    0013
+F0				  BIT	      D5
+HH				  NUMBER    0073	  22
+IE				  DATA	      A8
+IE0				  BIT	      89
+IE1				  BIT	      8B
+INT0				  BIT	      B2
+INT1				  BIT	      B3
+IP				  DATA	      B8
+IT0				  BIT	      88
+IT1				  BIT	      8A
+KEYBOARD			  NUMBER    007C	  16
+KEYBOARD_HANDLER		  CODE	    0111	 135
+MAIN_LOOP			  CODE	    00A8	  60
+MM				  NUMBER    0074	  21
+NO60				  CODE	    010C	 131
+NOACC7				  CODE	    00E6	 106
+NO_DOWN_ENTER			  CODE	    013D	 159
+NO_DOWN_ESC			  CODE	    0132	 153
+NO_KEY				  CODE	    00BF	  82
+NO_LEFT_ENTER			  CODE	    0127	 147
+NO_LEFT_ESC			  CODE	    011C	 141
+NO_RIGHT_ENTER			  CODE	    0153	 171
+NO_RIGHT_ESC			  CODE	    0148	 165
+NO_UP				  CODE	    0175	 201
+OV				  BIT	      D2
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 7
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+P				  BIT	      D0
+P0				  DATA	      80
+P1				  DATA	      90
+P2				  DATA	      A0
+P3				  DATA	      B0
+PCON				  DATA	      87
+PS				  BIT	      BC
+PSW				  DATA	      D0
+PT0				  BIT	      B9
+PT1				  BIT	      BB
+PX0				  BIT	      B8
+PX1				  BIT	      BA
+RB8				  BIT	      9A
+RD				  BIT	      B7
+REN				  BIT	      9C
+RESET				  CODE	    0000
+RI				  BIT	      98
+RS0				  BIT	      D3
+RS1				  BIT	      D4
+RXD				  BIT	      B0
+SBUF				  DATA	      99
+SCON				  DATA	      98
+SEG7				  BIT	      96	   8
+SINT				  CODE	    0023
+SKEY				  BIT	      B5	   9
+SM0				  BIT	      9F
+SM1				  BIT	      9E
+SM2				  BIT	      9D
+SP				  DATA	      81
+SS				  NUMBER    0075	  20
+STABLE				  CODE	    00D5	  96
+START				  CODE	    0080	  36
+SUBTRACT_HOURS			  CODE	    0161	 181
+SUBTRACT_MINUTES		  CODE	    0169	 189
+SUBTRACT_SECONDS		  CODE	    0171	 197
+T0				  BIT	      B4
+T1				  BIT	      B5
+TB8				  BIT	      9B
+TCON				  DATA	      88
+TEST				  BIT	      97	   6
+TF0				  BIT	      8D
+TF1				  BIT	      8F
+TH0				  DATA	      8C
+TH1				  DATA	      8D
+TI				  BIT	      99
+TIMER0				  CODE	    000B
+TIMER1				  CODE	    001B
+TL0				  DATA	      8A
+TL1				  DATA	      8B
+TMOD				  DATA	      89
+TR0				  BIT	      8C
+TR1				  BIT	      8E
+TXD				  BIT	      B1
+UNSTABLE			  CODE	    00DA	 100
+WR				  BIT	      B6
