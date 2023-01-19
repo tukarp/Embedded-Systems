@@ -8,89 +8,89 @@
 #define FALSE 0
 
 // FLAGI BITOWE
-__bit SECOND_PASSED_FLAG;       // FLAGA MIJAJ•CEJ SEKUNDY
-__bit INTERRUPT_T0_FLAG;	    // FLAGA PRZERWANIA LICZNIKA T0
-int T0_INTERRUPTS_COUNTER;      // LICZNIK PRZERWA— LICZNIKA T0
+__bit SECOND_PASSED_FLAG;       // FLAGA MIJAJ¬•CEJ SEKUNDY
+__bit INTERRUPT_T0_FLAG;	// FLAGA PRZERWANIA LICZNIKA T0
+int T0_INTERRUPTS_COUNTER;      // LICZNIK PRZERWA√ë LICZNIKA T0
 
 // CLOCK
-// OD LEWEJ ZACZYNAJ• SI  SEKUNDY - JEST GODZINA 23:55:41
-//unsigned char CLOCK_ARRAY[6] = {0, 0, 0, 0, 0, 0};  // TABLICA WYåWIETLAJ•CA ZEGAREK - TEST
-unsigned char CLOCK_ARRAY[6] = {1, 4, 5, 5, 3, 2};    // TABLICA WYåWIETLAJ•CA ZEGAREK
+// OD LEWEJ ZACZYNAJ¬• SI√ä SEKUNDY - JEST GODZINA 23:55:41
+//unsigned char CLOCK_ARRAY[6] = {0, 0, 0, 0, 0, 0};  // TABLICA WY≈íWIETLAJ¬•CA ZEGAREK - TEST
+unsigned char CLOCK_ARRAY[6] = {1, 4, 5, 5, 3, 2};    // TABLICA WY≈íWIETLAJ¬•CA ZEGAREK
 
 // DISPLAY
-__xdata unsigned char * ACTIVE_DISPLAY_BUFFER = (__xdata unsigned char *) 0xFF30;               // BUFOR WYBIERAJ•CY AKTYWNY WYåWIETLACZ DLA WYåWIETLACZA 7-SEGMENTOWEGO
-__xdata unsigned char * ACTIVE_DISPLAY_SEGMENTS_BUFFER = (__xdata unsigned char *) 0xFF38;      // BUFOR WYBIERAJ•CY AKTYWNE SEGMENTY WYåWIETLACZA
-__bit __at (0x96) DISPLAY_SWITCH;                   // PRZE£•CZNIK WYåWIETLACZA LED
+__xdata unsigned char * ACTIVE_DISPLAY_BUFFER = (__xdata unsigned char *) 0xFF30;               // BUFOR WYBIERAJ¬•CY AKTYWNY WY≈íWIETLACZ DLA WY≈íWIETLACZA 7-SEGMENTOWEGO
+__xdata unsigned char * ACTIVE_DISPLAY_SEGMENTS_BUFFER = (__xdata unsigned char *) 0xFF38;      // BUFOR WYBIERAJ¬•CY AKTYWNE SEGMENTY WY≈íWIETLACZA
+__bit __at (0x96) DISPLAY_SWITCH;                   // PRZE¬£¬•CZNIK WY≈íWIETLACZA LED
 __sbit __at(0x97) TEST_LED;                         // DIODA TEST
-unsigned char ACTIVE_DISPLAY_INDEX;                 // INDEKS AKTYWNEGO WYåWIETLACZA
-unsigned char ACTIVE_DISPLAY_BIT;                   // AKTYWNY WYåWIETLACZ BITOWO
-__code unsigned char DISPLAY_PATTERNS[10] = {       // DEFINICJE WZOR”W WYåWIETLACZA 7-SEGMENTOWEGO
+unsigned char ACTIVE_DISPLAY_INDEX;                 // INDEKS AKTYWNEGO WY≈íWIETLACZA
+unsigned char ACTIVE_DISPLAY_BIT;                   // AKTYWNY WY≈íWIETLACZ BITOWO
+__code unsigned char DISPLAY_PATTERNS[10] = {       // DEFINICJE WZOR√ìW WY≈íWIETLACZA 7-SEGMENTOWEGO
         0b0111111, 0b0000110, 0b1011011, 0b1001111,
         0b1100110, 0b1101101, 0b1111101, 0b0000111,
         0b1111111, 0b1101111
 };
 
 // KEYBOARD
-// WZORY PRZYCISK”W
+// WZORY PRZYCISK√ìW
 #define ENTER 0b000001
 #define ESC 0b000010
 #define RIGHT 0b000100
 #define UP 0b001000
 #define DOWN 0b010000
 #define LEFT 0b100000
-unsigned char KEYBOARD[4] = {0, 0, 0, 0};    // TABLICA PRZECHOWUJ•CA STANY KLAWIATURY
-unsigned char ACTIVE_KEYBOARD_DISPLAY_BIT;                  // AKTYWNY STAN KLAWIATURY BITOWO
-unsigned char ACTIVE_KEYBOARD_DISPLAY_INDEX;                // INDEKS AKTYWNEGO WYåWIETLACZA
+unsigned char KEYBOARD[4] = {0, 0, 0, 0};            // TABLICA PRZECHOWUJ¬•CA STANY KLAWIATURY
+unsigned char ACTIVE_KEYBOARD_DISPLAY_BIT;           // AKTYWNY STAN KLAWIATURY BITOWO
+unsigned char ACTIVE_KEYBOARD_DISPLAY_INDEX;         // INDEKS AKTYWNEGO WY≈íWIETLACZA
 
 // FUNKCJE
-void t0_interrupt() __interrupt(1); // OBS£UØ PRZERWANIA
-void test_led();                    // OBS£UØ DIODE TEST
-void display_handler();             // OBS£UØ ZMIAN  SEGMENT”W WYåWIETLACZA
-void display();                     // OBS£UØ WYåWIETLANIE
-void keyboard();                    // OBS£UØ KLAWIATUR 
-void keyboard_handler();            // OBS£UØ LOGIK  KLAWIATURY
-void update_seconds();              // OBS£UØ SEKUNDY
-void update_minutes();              // OBS£UØ MINUT
-void update_hours();                // OBS£UØ GODZINY
-void update_time();                 // OBS£UØ CZAS
-void initialize();                  // USTAWIENIE WARTOåCI POCZ•TKOWYCH
+void t0_interrupt() __interrupt(1); // OBS¬£U¬Ø PRZERWANIA
+void test_led();                    // OBS¬£U¬Ø DIODE TEST
+void display_handler();             // OBS¬£U¬Ø ZMIAN√ä SEGMENT√ìW WY≈íWIETLACZA
+void display();                     // OBS¬£U¬Ø WY≈íWIETLANIE
+void keyboard();                    // OBS¬£U¬Ø KLAWIATUR√ä
+void keyboard_handler();            // OBS¬£U¬Ø LOGIK√ä KLAWIATURY
+void update_seconds();              // OBS¬£U¬Ø SEKUNDY
+void update_minutes();              // OBS¬£U¬Ø MINUT
+void update_hours();                // OBS¬£U¬Ø GODZINY
+void update_time();                 // OBS¬£U¬Ø CZAS
+void initialize();                  // USTAWIENIE WARTO≈íCI POCZ¬•TKOWYCH
 
 // --------------------------------------------------
 // ----------------------DISPLAY---------------------
 // --------------------------------------------------
 
-// OBS£UØ DIODE TEST
+// OBS¬£U¬Ø DIODE TEST
 void test_led() {
     TEST_LED = !TEST_LED;
 }
 
-// OBS£UØ ZMIAN  SEGMENT”W WYåWIETLACZA
+// OBS¬£U¬Ø ZMIAN√ä SEGMENT√ìW WY≈íWIETLACZA
 void display_handler() {
-    // JEåLI INDEKS WYåWIETLACZA JEST MNIEJSZY OD 5 - IDè DO NAST PNEGO WYåWIETLACZA
+    // JE≈íLI INDEKS WY≈íWIETLACZA JEST MNIEJSZY OD 5 - ID¬è DO NAST√äPNEGO WY≈íWIETLACZA
     if(ACTIVE_DISPLAY_INDEX < 5) {
         ACTIVE_DISPLAY_INDEX++;
         ACTIVE_DISPLAY_BIT += ACTIVE_DISPLAY_BIT;
-    // JEåLI INDEKS WYåWIETLACZA JEST WI KSZY OD 5 - ZRESETUJ WARTOå∆
+    // JE≈íLI INDEKS WY≈íWIETLACZA JEST WI√äKSZY OD 5 - ZRESETUJ WARTO≈í√Ü
     } else {
         ACTIVE_DISPLAY_INDEX = 0;
         ACTIVE_DISPLAY_BIT = 1;
     }
 }
 
-// OBS£UØ WYåWIETLANIE
+// OBS¬£U¬Ø WY≈íWIETLANIE
 void display() {
-    DISPLAY_SWITCH = TRUE;                                                                          // W£•CZA WYåWIETLACZ LED
-    * ACTIVE_DISPLAY_BUFFER = ACTIVE_DISPLAY_BIT;                                                   // WYBIERA WYåWIETLACZ LED
-    * ACTIVE_DISPLAY_SEGMENTS_BUFFER = DISPLAY_PATTERNS[CLOCK_ARRAY[ACTIVE_DISPLAY_INDEX]];         // WYBIERA SEGMENTY WYåWIETLACZA LED
-    DISPLAY_SWITCH = FALSE;                                                                         // WY£•CZA WYåWIETLACZ LED
-    display_handler();                                                                              // ZMIENIAJ SEGMENTY WYåWIETLACZA
+    DISPLAY_SWITCH = TRUE;                                                                          // W¬£¬•CZA WY≈íWIETLACZ LED
+    * ACTIVE_DISPLAY_BUFFER = ACTIVE_DISPLAY_BIT;                                                   // WYBIERA WY≈íWIETLACZ LED
+    * ACTIVE_DISPLAY_SEGMENTS_BUFFER = DISPLAY_PATTERNS[CLOCK_ARRAY[ACTIVE_DISPLAY_INDEX]];         // WYBIERA SEGMENTY WY≈íWIETLACZA LED
+    DISPLAY_SWITCH = FALSE;                                                                         // WY¬£¬•CZA WY≈íWIETLACZ LED
+    display_handler();                                                                              // ZMIENIAJ SEGMENTY WY≈íWIETLACZA
 }
 
 // --------------------------------------------------
 // ---------------------KEYBOARD---------------------
 // --------------------------------------------------
 
-// OBS£UØ LOGIK  KLAWIATURY
+// OBS¬£U¬Ø LOGIK√ä KLAWIATURY
 void keyboard_handler() {
     // WARUNKI ODEJMOWANIA / DODAWANIA CZASU
     if((KEYBOARD[0] != KEYBOARD[1]) && (KEYBOARD[0] != KEYBOARD[2]) && (KEYBOARD[0] != KEYBOARD[3])) {
@@ -160,15 +160,15 @@ void keyboard_handler() {
     KEYBOARD[0] = 0;
 }
 
-// OBS£UØ KLAWIATUR 
+// OBS¬£U¬Ø KLAWIATUR√ä
 void keyboard() {
     ACTIVE_KEYBOARD_DISPLAY_INDEX++;
-    // SPRAWDè CZY KLAWIATURA BY£A WCIåNI TA
+    // SPRAWD¬è CZY KLAWIATURA BY¬£A WCI≈íNI√äTA
     if(P3_5) {
         KEYBOARD[0] = (KEYBOARD[0] | ACTIVE_KEYBOARD_DISPLAY_BIT);
     }
     ACTIVE_KEYBOARD_DISPLAY_BIT += ACTIVE_KEYBOARD_DISPLAY_BIT;
-    // OBS£UØ LOGIK  KLAWIATURY
+    // OBS¬£U¬Ø LOGIK√ä KLAWIATURY
     if(ACTIVE_KEYBOARD_DISPLAY_BIT == 0b1000000) {
         ACTIVE_DISPLAY_INDEX = 0;
         ACTIVE_KEYBOARD_DISPLAY_BIT = 0b0000001;
@@ -182,42 +182,42 @@ void keyboard() {
 // ----------------------TIMER-----------------------
 // --------------------------------------------------
 
-// OBS£UØ SEKUNDY
+// OBS¬£U¬Ø SEKUNDY
 void update_seconds() {
-    // ZWI KSZENIE JEDNOåCI SEKUND
+    // ZWI√äKSZENIE JEDNO≈íCI SEKUND
     if(CLOCK_ARRAY[0] == 10) {
         CLOCK_ARRAY[0] = 0;
         CLOCK_ARRAY[1]++;
     }
-    // ZWI KSZENIE DZIESI•TEK SEKUND
+    // ZWI√äKSZENIE DZIESI¬•TEK SEKUND
     if(CLOCK_ARRAY[1] == 6) {
         CLOCK_ARRAY[1] = 0;
         CLOCK_ARRAY[2]++;
     }
 }
 
-// OBS£UØ MINUTY
+// OBS¬£U¬Ø MINUTY
 void update_minutes() {
-    // ZWI KSZENIE JEDNOåCI MINUT
+    // ZWI√äKSZENIE JEDNO≈íCI MINUT
     if(CLOCK_ARRAY[2] == 10) {
         CLOCK_ARRAY[2] = 0;
         CLOCK_ARRAY[3]++;
     }
-    // ZWI KSZENIE DZIESI•TEK MINUT
+    // ZWI√äKSZENIE DZIESI¬•TEK MINUT
     if(CLOCK_ARRAY[3] == 6) {
         CLOCK_ARRAY[3] = 0;
         CLOCK_ARRAY[4]++;
     }
 }
 
-// OBS£UØ GODZINY
+// OBS¬£U¬Ø GODZINY
 void update_hours() {
-    // ZWI KSZENIE JEDNOåCI GODZIN
+    // ZWI√äKSZENIE JEDNO≈íCI GODZIN
     if(CLOCK_ARRAY[4] == 10) {
         CLOCK_ARRAY[4] = 0;
         CLOCK_ARRAY[5]++;
     }
-    // ZWI KSZENIE DZIESI•TEK GODZIN - CZYLI ZEROWANIE ZEGARKA
+    // ZWI√äKSZENIE DZIESI¬•TEK GODZIN - CZYLI ZEROWANIE ZEGARKA
     if(((CLOCK_ARRAY[5] == 2) && (CLOCK_ARRAY[4] >= 4)) || (CLOCK_ARRAY[5] >= 3)) {
         CLOCK_ARRAY[0] = 0;
         CLOCK_ARRAY[1] = 0;
@@ -228,7 +228,7 @@ void update_hours() {
     }
 }
 
-// OBS£UØ CZAS
+// OBS¬£U¬Ø CZAS
 void update_time() {
     if(SECOND_PASSED_FLAG == 1) {
         SECOND_PASSED_FLAG = 0;
@@ -239,13 +239,13 @@ void update_time() {
     }
 }
 
-// OBS£UØ PRZERWANIA
+// OBS¬£U¬Ø PRZERWANIA
 void t0_interrupt() __interrupt(1) {
     TH0 = 228;                      // USTAW TH0
     TL0 = 124;                      // USTAW TL0
     INTERRUPT_T0_FLAG = 1;          // SYGNALIZUJ PRZERWANIE
-    T0_INTERRUPTS_COUNTER++;        // ZAKTUALIZUJ LICZNIK PRZERWA— T0
-    // JEåLI MIN £O 1024 PRZERWA— ZRESETUJ LICZNIK
+    T0_INTERRUPTS_COUNTER++;        // ZAKTUALIZUJ LICZNIK PRZERWA√ë T0
+    // JE≈íLI MIN√ä¬£O 1024 PRZERWA√ë ZRESETUJ LICZNIK
     if(T0_INTERRUPTS_COUNTER >= 1024) {
         SECOND_PASSED_FLAG = TRUE;
         T0_INTERRUPTS_COUNTER -= 1024;
@@ -256,7 +256,7 @@ void t0_interrupt() __interrupt(1) {
 // ------------------INITIALIZATION------------------
 // --------------------------------------------------
 
-// USTAWIENIE WARTOåCI POCZ•TKOWYCH
+// USTAWIENIE WARTO≈íCI POCZ¬•TKOWYCH
 void initialize() {
     // USTAWIENIE ZMIENNYCH
     T0_INTERRUPTS_COUNTER = FALSE;
@@ -267,22 +267,22 @@ void initialize() {
     ACTIVE_KEYBOARD_DISPLAY_INDEX = 0;
     ACTIVE_KEYBOARD_DISPLAY_BIT = 0b00000001;
 
-    // USTAWIENIE WYåWIETLACZA
+    // USTAWIENIE WY≈íWIETLACZA
     ACTIVE_DISPLAY_INDEX = 0;
     ACTIVE_DISPLAY_BIT = 0b00000001;
 
-    // USTAWIENIE REJESTR”W KONTROLNYCH
+    // USTAWIENIE REJESTR√ìW KONTROLNYCH
     TH0 = 228;
     TH1 = 250;
     TL0 = 124;
     TL1 = 250;
 
-    // USTAWIENIE REJESTR”W 0
+    // USTAWIENIE REJESTR√ìW 0
     TF1 = FALSE;
     RI = FALSE;
     TI = FALSE;
 
-    // USTAWIENIE REJESTR”W NA 1
+    // USTAWIENIE REJESTR√ìW NA 1
     ET0 = TRUE;
     ES = TRUE;
     EA = TRUE;
@@ -296,12 +296,12 @@ void initialize() {
 
 // ZEGAREK
 void clock() {
-    // ODåWIEØENIE PO PRZERWANIU
+    // OD≈íWIE¬ØENIE PO PRZERWANIU
     if(INTERRUPT_T0_FLAG == 1) {
-        INTERRUPT_T0_FLAG = 0;      // USTAW FLAG  PRZERWANIA NA 0
-        update_time();              // OBS£UØ LICZNIK CZASU
-        keyboard();                 // OBS£UØ KLAWIATUR 
-        display();                  // OBS£UØ WYåWIETLACZ
+        INTERRUPT_T0_FLAG = 0;      // USTAW FLAG√ä PRZERWANIA NA 0
+        update_time();              // OBS¬£U¬Ø LICZNIK CZASU
+        keyboard();                 // OBS¬£U¬Ø KLAWIATUR√ä
+        display();                  // OBS¬£U¬Ø WY≈íWIETLACZ
     }
 }
 
@@ -310,10 +310,10 @@ void clock() {
 // --------------------------------------------------
 
 void main() {
-    // USTAWIENIE WARTOåCI POCZ•TKOWYCH
+    // USTAWIENIE WARTO≈íCI POCZ¬•TKOWYCH
     initialize();
 
-    // P TLA PROGRAMOWA
+    // P√äTLA PROGRAMOWA
     while(TRUE) {
         clock();
     }
