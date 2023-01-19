@@ -38,9 +38,9 @@ __code unsigned char DISPLAY_PATTERNS[10] = {       // DEFINICJE WZORÓW WYŚWIE
 #define UP 0b001000
 #define DOWN 0b010000
 #define LEFT 0b100000
-unsigned char KEYBOARD[4] = {0, 0, 0, 0};                   // TABLICA PRZECHOWUJĄCA STANY KLAWIATURY
-unsigned char ACTIVE_KEYBOARD_DISPLAY_BIT;                  // AKTYWNY STAN KLAWIATURY BITOWO
-unsigned char ACTIVE_KEYBOARD_DISPLAY_INDEX;                // INDEKS AKTYWNEGO WYŚWIETLACZA
+unsigned char KEYBOARD[4] = {0, 0, 0, 0};             // TABLICA PRZECHOWUJĄCA STANY KLAWIATURY
+unsigned char ACTIVE_KEYBOARD_DISPLAY_BIT;            // AKTYWNY STAN KLAWIATURY BITOWO
+unsigned char ACTIVE_KEYBOARD_DISPLAY_INDEX;          // INDEKS AKTYWNEGO WYŚWIETLACZA
 
 // FUNKCJE
 void t0_interrupt() __interrupt(1); // OBSŁUŻ PRZERWANIA
