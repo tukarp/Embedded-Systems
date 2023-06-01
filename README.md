@@ -98,3 +98,91 @@ W skład rdzenia mikrokontrolera ```Intel 8051``` wchodzą:
 | Mebi  | Mi     | 220 = 1 048 576 = 1024 * 1Ki         |
 | Gibi  | Gi     | 230 = 1 073 741 824 = 1024 * 1Mi     |
 | Tebi  | Ti     | 240 = 1 099 511 627 776 = 1024 * 1Gi |
+
+### System pozycyjny zapisu liczb
+
+```System pozycyjny``` - to sposób zapisu liczb, w którym każda cyfra ma przypisaną wartość zależną od jej pozycji w liczbie.
+
+```LSB``` - Least Significant Bit - Najmniej znaczący bit.
+
+```MSB``` - Most Significant Bit - Najbardziej znaczący bit.
+
+### Systemy liczbowe
+
+| System dziesiętny | System szesnastkowy | System dwójkowy |
+| :---------------: | :-----------------: | :-------------: |
+|        $0$        |         $0$         |      $0000$     |
+|        $1$        |         $1$         |      $0001$     |
+|        $2$        |         $2$         |      $0010$     |
+|        $3$        |         $3$         |      $0011$     |
+|        $4$        |         $4$         |      $0100$     |
+|        $5$        |         $5$         |      $0101$     |
+|        $6$        |         $6$         |      $0110$     |
+|        $7$        |         $7$         |      $0111$     |
+|        $8$        |         $8$         |      $1000$     |
+|        $9$        |         $9$         |      $1001$     |
+|        $10$       |         $A$         |      $1010$     |
+|        $11$       |         $B$         |      $1011$     |
+|        $12$       |         $C$         |      $1100$     |
+|        $13$       |         $D$         |      $1101$     |
+|        $14$       |         $E$         |      $1110$     |
+|        $15$       |         $F$         |      $1111$     |
+
+### System dziesiętny
+
+Wartość liczby w systemie dziesiętnym można wyznaczyć przy pomocy wzoru
+
+$$ \sum_{i=0}^{n-1} a_{i} 10^{i} = a_{0} 10^{0} + a_{1} 10^{1} + a_{2} 10^{2} + ... + a_{n-1} 10^{n-1} $$
+
+Przykładowy zapis
+
+$ 574_{10} $
+
+Jest skróconym zapisanem następującego wyrażenia
+
+$ (5 * 10^{2}) + (7 * 10^{1}) + (4 * 10^{0}) $
+
+### System dwójkowy
+
+Wartość liczby w systemie dwójkowym można wyznaczyć przy pomocy wzoru
+
+$$ \sum_{i=0}^{n-1} a_{i} 2^{i} = a_{0} 2^{0} + a_{1} 2^{1} + a_{2} 2^{2} + ... + a_{n-1} 2^{n-1} $$
+
+Przykładowy zapis
+
+$ 1001_{2} $
+
+Jest skróconym zapisanem następującego wyrażenia
+
+$ (1 * 2^{3}) + (0 * 2^{2}) + (0 * 2^{1}) + (1 * 2_{0}) $
+
+Konwersja z systemu dziesiętnego na system dwójkowy
+
+| Dzielenie przez podstawę | Wynik | Reszta | Znaczenie bitów |
+| :----------------------: | :---: | :----: | :-------------: |
+|         $ 9 / 2 $        |  $4$  |  $1$   |       LSB       |
+|         $ 4 / 2 $        |  $2$  |  $0$   |                 |
+|         $ 2 / 2 $        |  $1$  |  $0$   |                 |
+|         $ 1 / 2 $        |  $0$  |  $1$   |       MSB       |
+
+### System szesnastkowy
+
+Wartość liczby w systemie dziesiętnym można wyznaczyć przy pomocy wzoru
+
+$$ \sum_{i=0}^{n-1} a_{i} 16^{i} = a_{0} 16^{0} + a_{1} 16^{1} + a_{2} 16^{2} + ... + a_{n-1} 16^{n-1} $$
+
+Przykładowy zapis
+
+$ 9DF_{16} $
+
+Jest skróconym zapisanem następującego wyrażenia
+
+$ (9 * 16^{2}) + (D * 16^{1}) + (F * 16^{0}) $
+
+Konwersja z systemu dziesiętnego na system szesnastkowy
+
+| Dzielenie przez podstawę | Wynik  |    Reszta    | Znaczenie bitów |
+| :----------------------: | :----: | :----------: | :-------------: |
+|       $ 2527 / 16 $      |  $157$ |  $ 15_{10} $ |       LSB       |
+|       $ 157 / 16  $      |   $9$  |  $ 13_{10} $ |                 |
+|       $  9 / 16   $      |   $0$  |  $ 9_{10} $  |       MSB       |
