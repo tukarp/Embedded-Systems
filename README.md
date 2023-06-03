@@ -208,8 +208,8 @@ Konwersja z systemu dziesiętnego na system szesnastkowy
 ### Mikrokontroler 80C51
 
 ```Mikrokontroler 80C51``` jako typowy przedstawiciel rodziny ```MCS 51``` wyposażony jest w:
-  - 128B wbudowanej pamięci ```RAM```,
-  - 4KB wbudowanej pamięci ```ROM```,
+  - ```128B``` wbudowanej pamięci ```RAM```,
+  - ```4KB``` wbudowanej pamięci ```ROM```,
   - możliwość podłączenia dodatkowej zewnętrznej pamięci.
 
 ### Pamięć stała - ```ROM```
@@ -220,3 +220,7 @@ Konwersja z systemu dziesiętnego na system szesnastkowy
 programu oraz niektórych stałych wartości,
 - wielkość kodu programu jest ograniczona przez wielkość tej pamięci,
 - ROM może być wbudowany w mikrokontroler lub dołączony w formie zewnętrznego układu.
+
+### Pamięć o dostępie swobodnym - ```RAM```
+
+```RAM``` - Random Acces Memory - wykorzystywana jest m.in. do tymczasowego składowania danych oraz pośrednich wyników otrzymywanych i wykorzystywanych w trakcie działania programu.
