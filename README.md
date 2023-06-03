@@ -168,7 +168,7 @@ $$ \sum_{i=0}^{n-1} a_{i} 2^{i} = a_{0} 2^{0} + a_{1} 2^{1} + a_{2} 2^{2} + ... 
 
 Przykładowy zapis
 
-$ 1001_{2} $
+$1001_{2}$
 
 Jest skróconym zapisanem następującego wyrażenia
 
@@ -191,11 +191,11 @@ $$ \sum_{i=0}^{n-1} a_{i} 16^{i} = a_{0} 16^{0} + a_{1} 16^{1} + a_{2} 16^{2} + 
 
 Przykładowy zapis
 
-$ 9DF_{16} $
+$9DF_{16}$
 
 Jest skróconym zapisanem następującego wyrażenia
 
-$ (9 * 16^{2}) + (D * 16^{1}) + (F * 16^{0}) $
+$(9 * 16^{2}) + (D * 16^{1}) + (F * 16^{0})$
 
 Konwersja z systemu dziesiętnego na system szesnastkowy
 
