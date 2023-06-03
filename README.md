@@ -128,6 +128,24 @@ W skład rdzenia mikrokontrolera ```Intel 8051``` wchodzą:
 |        $14$       |         $E$         |      $1110$     |
 |        $15$       |         $F$         |      $1111$     |
 
+### Zapisy systemów liczbowych
+
+- ```System dziesiętny``` - dopisanie liter ```d``` lub ```D```, np:
+    - ```10d```,
+    - ```10D```,
+    - ```010d```,
+    - ```010D```,
+- ```System dwójkowy``` - dopisanie liter ```b``` lub ```B```, np:
+    - ```1010b```,
+    - ```1010B```,
+    - ```01010b```,
+    - ```01010B```,
+- ```System ósemkowy``` - dopisanie liter ```q```, ```Q```, ```o``` lub ```O``` np:
+    - ```377q```,
+    - ```377o```,
+    - ```377Q```,
+    - ```377O```,
+
 ### System dziesiętny
 
 Wartość liczby w systemie dziesiętnym można wyznaczyć przy pomocy wzoru
@@ -136,11 +154,11 @@ $$ \sum_{i=0}^{n-1} a_{i} 10^{i} = a_{0} 10^{0} + a_{1} 10^{1} + a_{2} 10^{2} + 
 
 Przykładowy zapis
 
-$ 574_{10} $
+$574_{10}$
 
 Jest skróconym zapisanem następującego wyrażenia
 
-$ (5 * 10^{2}) + (7 * 10^{1}) + (4 * 10^{0}) $
+$(5 * 10^{2}) + (7 * 10^{1}) + (4 * 10^{0})$
 
 ### System dwójkowy
 
@@ -154,16 +172,16 @@ $ 1001_{2} $
 
 Jest skróconym zapisanem następującego wyrażenia
 
-$ (1 * 2^{3}) + (0 * 2^{2}) + (0 * 2^{1}) + (1 * 2_{0}) $
+$(1 * 2^{3}) + (0 * 2^{2}) + (0 * 2^{1}) + (1 * 2_{0})$
 
 Konwersja z systemu dziesiętnego na system dwójkowy
 
 | Dzielenie przez podstawę | Wynik | Reszta | Znaczenie bitów |
 | :----------------------: | :---: | :----: | :-------------: |
-|         $ 9 / 2 $        |  $4$  |  $1$   |       LSB       |
-|         $ 4 / 2 $        |  $2$  |  $0$   |                 |
-|         $ 2 / 2 $        |  $1$  |  $0$   |                 |
-|         $ 1 / 2 $        |  $0$  |  $1$   |       MSB       |
+|          $9 / 2$         |  $4$  |  $1$   |       LSB       |
+|          $4 / 2$         |  $2$  |  $0$   |                 |
+|          $2 / 2$         |  $1$  |  $0$   |                 |
+|          $1 / 2$         |  $0$  |  $1$   |       MSB       |
 
 ### System szesnastkowy
 
@@ -183,6 +201,22 @@ Konwersja z systemu dziesiętnego na system szesnastkowy
 
 | Dzielenie przez podstawę | Wynik  |    Reszta    | Znaczenie bitów |
 | :----------------------: | :----: | :----------: | :-------------: |
-|       $ 2527 / 16 $      |  $157$ |  $ 15_{10} $ |       LSB       |
-|       $ 157 / 16  $      |   $9$  |  $ 13_{10} $ |                 |
-|       $  9 / 16   $      |   $0$  |  $ 9_{10} $  |       MSB       |
+|        $2527 / 16$       | $157$  |   $15_{10}$  |       LSB       |
+|        $157 / 16$        |  $9$   |   $13_{10}$  |                 |
+|         $9 / 16$         |  $0$   |   $9_{10}$   |       MSB       |
+
+### Mikrokontroler 80C51
+
+```Mikrokontroler 80C51``` jako typowy przedstawiciel rodziny ```MCS 51``` wyposażony jest w:
+  - 128B wbudowanej pamięci ```RAM```,
+  - 4KB wbudowanej pamięci ```ROM```,
+  - możliwość podłączenia dodatkowej zewnętrznej pamięci.
+
+### Pamięć stała - ```ROM```
+
+```ROM``` - Read only Memory - pamięć wykorzystywana do jednokrotnego zapisu (np. przy kompilacji programu) i późniejszego wykorzystywania zapisanych danych.
+
+- wykorzystujemy do trwałego przechowywania wykonywanego kodu
+programu oraz niektórych stałych wartości,
+- wielkość kodu programu jest ograniczona przez wielkość tej pamięci,
+- ROM może być wbudowany w mikrokontroler lub dołączony w formie zewnętrznego układu.
